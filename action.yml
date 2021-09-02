@@ -1,6 +1,6 @@
-name: "Python Container Action Template"
-description: "Get started with Python Container actions"
-author: "Jacob Tomlinson"
+name: "Pull request reminder action"
+description: "PoC for GitHub action that reminds about hanging pull requests"
+author: "Eficode Oy"
 inputs:
   myInput:
     description: "Input to use"
