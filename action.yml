@@ -2,12 +2,21 @@ name: "Pull request reminder action"
 description: "PoC for GitHub action that reminds about hanging pull requests"
 author: "Eficode Oy"
 inputs:
-  myInput:
-    description: "Input to use"
-    default: "world"
+  github_token:
+    required: true
+    description: 'GitHub token'
+  reminder_message:
+    required: true
+    description: 'Messages to send to developers on Github.'
+  pr_max_passive_time:
+    required: true
+    description: 'Max time PR is allowed to be without activity before notification.'
 outputs:
   myOutput:
     description: "Output from the action"
 runs:
   using: "docker"
   image: "Dockerfile"
+
+
+

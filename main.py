@@ -3,11 +3,9 @@ import requests  # noqa We are just importing this to prove the dependency insta
 
 
 def main():
-    my_input = os.environ["INPUT_MYINPUT"]
-
-    my_output = f"Hello {my_input}"
-
-    print(f"::set-output name=myOutput::{my_output}")
+    repo = os.environ["GITHUB_REPOSITORY"]
+    server_url = os.environ["GITHUB_SERVER_URL"]
+    print(f"Hello repo: {server_url}/{repo}")
 
 
 if __name__ == "__main__":
