@@ -9,7 +9,7 @@ jobs:
         id: selftest
 
         # Put your action repo here
-        uses: EficodeEntDemo/pull-request-reminder-action:master
+        uses: EficodeEntDemo/pull-request-reminder-action
 
       - name: Check outputs
         run: |
