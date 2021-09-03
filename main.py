@@ -13,6 +13,8 @@ def get_pull_request_page(url, token):
         link_header = response.headers.get('Link', None)
         next_url = get_next_page_url(link_header)
         return next_url, json.loads(response.text)
+    else:
+        print(f"{response.__dict__}")
 
     #log.error("Error accessing Github API : HTTP {} | {}".format(response.status_code, response.text))
     #raise SCMToolException("Unable to retrieve pull requests from github API | {}".format(response))
