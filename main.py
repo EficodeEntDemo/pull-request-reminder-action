@@ -22,7 +22,7 @@ def main():
     github_token = os.environ["github_token"]
 
     print(f"Hello repo: {server_url}/{repo}")
-    print("Hello repo: %s", github_token[0:4]")
+    print("Hello repo: %s", github_token[0:4])
 
 
     pull_requests_url = "{server_url}/{repo}/pulls?state=open&per_page=100".format(
