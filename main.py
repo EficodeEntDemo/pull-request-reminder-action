@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 #import logging as log
 from requests import get  # noqa We are just importing this to prove the dependency installed correctly
 
@@ -18,10 +19,10 @@ def get_pull_request_page(url, token):
 def main():
     repo = os.environ["GITHUB_REPOSITORY"]
     server_url = os.environ["GITHUB_SERVER_URL"]
-    github_token = os.environ["github_token"]
 
     print(f"Hello repo: {server_url}/{repo}")
-    print("Token: %s", github_token[0: 5])
+    print("Token: %s", sys.argv[0][0: 5])
+    print("Token: %s", sys.argv[1][0: 5])
 
     pull_requests_url = "{server_url}/{repo}/pulls?state=open&per_page=100".format(
                 server_url=server_url,
