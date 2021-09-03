@@ -6,8 +6,9 @@ from requests import get  # noqa We are just importing this to prove the depende
 
 def get_pull_request_page(url, token):
     #log.debug("Accessing Github API with URL: {}".format(url))
+
     headers = {'Authorization': f"Bearer {token}"}
-    response = get(url, auth=headers, verify=True)
+    response = get(url, headers=headers, verify=True)
     if response.status_code == 200:
         link_header = response.headers.get('Link', None)
         next_url = get_next_page_url(link_header)
