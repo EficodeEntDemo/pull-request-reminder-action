@@ -31,7 +31,7 @@ def main():
             )
 
     while pull_requests_url:
-        result = get_pull_request_page(pull_requests_url, token)
+        result = get_pull_request_page(pull_requests_url, github_token)
         pull_requests_url = result[0]
         for pull_request in result[1]:
             print(f"Pull request: {pull_request}")
