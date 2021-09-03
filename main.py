@@ -1,43 +1,81 @@
 import os
 import json
-import sys
-#import logging as log
 from requests import get  # noqa We are just importing this to prove the dependency installed correctly
+import logging as log
+from datetime import datetime
+from datetime import timezone
+
+log.basicConfig(format="%(asctime)s %(levelname)-8s %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+log.root.setLevel(log.DEBUG)
+
+
+def utc_now():
+    return datetime.now(timezone.utc)
+
+
+def get_next_page_url(link_header):
+    if link_header:
+        log.debug("Parsing header {}".format(link_header))
+        links = link_header.split(",")
+        for link in links:
+            parts = link.split(";")
+            if len(parts) >= 2 and parts[1].strip() == "rel=\"next\"":
+                return parts[0].strip().strip("<").strip(">")
+    return None
+
 
 def get_pull_request_page(url, token):
-    #log.debug("Accessing Github API with URL: {}".format(url))
-
-    headers = {'Authorization': f"Bearer {token}"}
+    headers = {"Authorization": f"Bearer {token}"}
     response = get(url, headers=headers, verify=True)
     if response.status_code == 200:
-        link_header = response.headers.get('Link', None)
+        link_header = response.headers.get("Link", None)
         next_url = get_next_page_url(link_header)
         return next_url, json.loads(response.text)
     else:
-        print(f"{response.__dict__}")
+        log.debug(f"{response.__dict__}")
 
-    #log.error("Error accessing Github API : HTTP {} | {}".format(response.status_code, response.text))
-    #raise SCMToolException("Unable to retrieve pull requests from github API | {}".format(response))
+
+def check_the_pull_request_and_notify(pull_request):
+    title = pull_request.get('title', None)
+    created_at = pull_request.get('created_at', None)
+    updated_at = pull_request.get('updated_at', None)
+
+    log.debug(f"Created {created_at}")
+    log.debug(f"Updated {updated_at}")
+
 
 def main():
-    repo = os.environ["GITHUB_REPOSITORY"]
-    server_url = os.environ["GITHUB_SERVER_URL"]
     github_token = os.environ["INPUT_GITHUB_TOKEN"]
+    server_url = os.environ["GITHUB_API_URL"]
+    owner = os.environ["GITHUB_REPOSITORY_OWNER"]
+    repo = os.environ["GITHUB_REPOSITORY"]
 
-    print(f"Hello repo: {server_url}/{repo}")
-    print("Hello repo: %s", github_token[0:4])
+    log.debug(f"Hello repo: {server_url}/{repo}")
+    log.debug("Hello repo: %s", github_token[0:4])
 
+    pull_requests_url = f"{server_url}/repos/{owner}/{repo}/pulls?state=open&per_page=100"
 
-    pull_requests_url = "{server_url}/{repo}/pulls?state=open&per_page=100".format(
-                server_url=server_url,
-                repo=repo
-            )
-
+    count_of_pages = 0
     while pull_requests_url:
+        count_of_pages += 1
         result = get_pull_request_page(pull_requests_url, github_token)
+        log.debug(f"Complete result: {result}")
         pull_requests_url = result[0]
+        pull_request_count = 0
         for pull_request in result[1]:
-            print(f"Pull request: {pull_request}")
+            check_the_pull_request_and_notify(pull_request)
+            pull_request_count += 1
+            log.debug(f"Pull requests {pull_request_count}: {pull_request}")
+
+        log.debug(f"We got {pull_request_count} pull requests")
+        log.debug(f"We got {count_of_pages} pages")
+
 
 if __name__ == "__main__":
+    os.environ["INPUT_GITHUB_TOKEN"] = "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"
+    os.environ["GITHUB_API_URL"] = "https://api.github.com"
+    os.environ["GITHUB_REPOSITORY_OWNER"] = "EficodeEntDemo"
+    os.environ["GITHUB_REPOSITORY"] = "pluto-the-beginning"
+
     main()
+

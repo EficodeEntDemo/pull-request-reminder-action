@@ -8,8 +8,10 @@ import main
 
 class TestCode(unittest.TestCase):
 
-    def test_should_pass(self):
-        os.environ["GITHUB_REPOSITORY"] = "some-repo-name"
-        os.environ["GITHUB_SERVER_URL"] = "some-server-url"
+    def test_retrieve_all_pull_requests(self):
+        os.environ["INPUT_GITHUB_TOKEN"] = "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"
+        os.environ["GITHUB_API_URL"] = "https://api.github.com"
+        os.environ["GITHUB_REPOSITORY_OWNER"] = "EficodeEntDemo"
+        os.environ["GITHUB_REPOSITORY"] = "pluto-the-beginning"
+
         main.main()
-        #self.assertEqual(True, True)

@@ -45,7 +45,7 @@ jobs:
 
 | Output                                             | Description                                        |
 |------------------------------------------------------|-----------------------------------------------|
-| `myOutput`  | An example output (returns 'Hello world')    |
+| `myOutput`  | An example output (returns "Hello world")    |
 
 ## Examples
 
