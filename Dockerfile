@@ -6,4 +6,4 @@ COPY main.py /app/main.py
 RUN pip install -r requirements.txt
 ENV PYTHONPATH /app
 ARG github_token
-ENTRYPOINT [ "python", "/app/main.py", "$github_token" ]
+ENTRYPOINT [ "python", "/app/main.py", $github_token ]
