@@ -1,7 +1,7 @@
 import os
 import json
 #import logging as log
-import requests import get  # noqa We are just importing this to prove the dependency installed correctly
+from requests import get  # noqa We are just importing this to prove the dependency installed correctly
 
 def get_pull_request_page(url, token):
     #log.debug("Accessing Github API with URL: {}".format(url))
